@@ -52,7 +52,7 @@ func play(input ArenaUpdate) (response string) {
 	}
 	for _, player_state := range input.Arena.State {
 		if (player_state.X  == me.X || player_state.Y == me.Y) && (player_state.X - me.X <= 2 || player_state.Y - me.Y >= -2) {
-			if ((player_state.X < me.X && me.Direction == "W") || (player_state.X > me.X && me.Direction == "E") || (player_state.Y < me.Y && me.Direction == "N") || (player_state.Y > me.Y && me.Direction == "S")) && (((player_state.X < me.X) && player_state.Direction == "E") || ((player_state.X > me.X) && player_state.Direction == "W") || ((player_state.Y < me.Y) && player_state.Direction == "S") || ((player_state.Y > me.Y) && player_state.Direction == "N") ) {
+			if ((player_state.X < me.X && me.Direction == "W") || (player_state.X > me.X && me.Direction == "E") || (player_state.Y < me.Y && me.Direction == "N") || (player_state.Y > me.Y && me.Direction == "S")) && (((player_state.X < me.X) && me.Direction == "W") || ((player_state.X > me.X) && me.Direction == "E") || ((player_state.Y < me.Y) && me.Direction == "N") || ((player_state.Y > me.Y) && me.Direction == "S") ) {
 				actionList = append(actionList, "T")
 				break
 			}
