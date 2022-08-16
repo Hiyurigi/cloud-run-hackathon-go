@@ -44,7 +44,7 @@ func handler(w http.ResponseWriter, req *http.Request) {
 }
 
 func play(input ArenaUpdate) (response string) {
-	// opposite := map[string]string{"N": "S", "W": "E", "S": "N", "E": "W"}
+	wind := []string{"N", "E", "S", "W"}
 	var action string
 	me, ok := input.Arena.State[input.Links.Self.Href]
 	if ok {
@@ -52,6 +52,10 @@ func play(input ArenaUpdate) (response string) {
 	}
 	for _, player_state := range input.Arena.State {
 		if player_state.X  == me.X || player_state.Y == me.Y {
+			if (player_state.X < me.X && me.Direction == "W") || (player_state.X > me.X && me.Direction == "E") || (player_state.Y < me.Y && me.Direction == "N") || (player_state.Y > me.Y && me.Direction == "S"){
+				actionList = append(actionList, "T")
+				break
+			}
 			if (player_state.X < me.X || player_state.X > me.X) && (player_state.Direction == "E" || player_state.Direction == "W") {
 				if me.Direction == "E" || me.Direction == "W" {
 					commands := []string{"L", "R"}
@@ -61,6 +65,7 @@ func play(input ArenaUpdate) (response string) {
 				}else {
 					actionList = append(actionList, "F")
 				}
+				break
 			}else if (player_state.Y < me.Y || player_state.Y > me.Y) && (player_state.Direction == "N" || player_state.Direction == "S") {
 				if me.Direction == "N" || me.Direction == "S" {
 					commands := []string{"L", "R"}
@@ -70,6 +75,7 @@ func play(input ArenaUpdate) (response string) {
 				}else {
 					actionList = append(actionList, "F")
 				}
+				break
 			}
 		}
 	}
