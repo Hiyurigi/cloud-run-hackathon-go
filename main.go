@@ -9,6 +9,8 @@ import (
 	"os"
 )
 
+
+var actionList []string
 func main() {
 	port := "8080"
 	if v := os.Getenv("PORT"); v != "" {
@@ -42,9 +44,40 @@ func handler(w http.ResponseWriter, req *http.Request) {
 }
 
 func play(input ArenaUpdate) (response string) {
-	log.Printf("IN: %#v", input)
-
-	commands := []string{"F", "R", "L", "T"}
-	rand := rand2.Intn(4)
-	return commands[rand]
+	// opposite := map[string]string{"N": "S", "W": "E", "S": "N", "E": "W"}
+	var action string
+	me, ok := input.Arena.State[input.Links.Self.Href]
+	if ok {
+		delete(input.Arena.State, input.Links.Self.Href)
+	}
+	for _, player_state := range input.Arena.State {
+		if player_state.X  == me.X || player_state.Y == me.Y {
+			if (player_state.X < me.X || player_state.X > me.X) && (player_state.Direction == "E" || player_state.Direction == "W") {
+				if me.Direction == "E" || me.Direction == "W" {
+					commands := []string{"L", "R"}
+					rand := rand2.Intn(2)
+					actionList = append(actionList, commands[rand])
+					actionList = append(actionList, "F")
+				}else {
+					actionList = append(actionList, "F")
+				}
+			}else if (player_state.Y < me.Y || player_state.Y > me.Y) && (player_state.Direction == "N" || player_state.Direction == "S") {
+				if me.Direction == "N" || me.Direction == "S" {
+					commands := []string{"L", "R"}
+					rand := rand2.Intn(2)
+					actionList = append(actionList, commands[rand])
+					actionList = append(actionList, "F")
+				}else {
+					actionList = append(actionList, "F")
+				}
+			}
+		}
+	}
+	if len(actionList) == 0 {
+		commands := []string{"F", "R", "L", "T"}
+		rand := rand2.Intn(4)
+		actionList = append(actionList, commands[rand])
+	}
+	action, actionList = actionList[0], actionList[1:]
+	return action
 }
