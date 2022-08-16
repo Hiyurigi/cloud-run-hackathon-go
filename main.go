@@ -80,8 +80,8 @@ func play(input ArenaUpdate) (response string) {
 		}
 	}
 	if len(actionList) == 0 {
-		commands := []string{"F", "R", "L", "T"}
-		rand := rand2.Intn(4)
+		commands := []string{"F", "R", "L"}
+		rand := rand2.Intn(3)
 		actionList = append(actionList, commands[rand])
 	}
 	action, actionList = actionList[0], actionList[1:]
