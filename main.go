@@ -52,8 +52,9 @@ func play(input ArenaUpdate) (response string) {
 	}
 	for _, player_state := range input.Arena.State {
 		if player_state.X  == me.X || player_state.Y == me.Y {
-			if (player_state.X < me.X && me.Direction == "W") || (player_state.X > me.X && me.Direction == "E") || (player_state.Y < me.Y && me.Direction == "N") || (player_state.Y > me.Y && me.Direction == "S"){
+			if ((player_state.X < me.X && me.Direction == "W") || (player_state.X > me.X && me.Direction == "E") || (player_state.Y < me.Y && me.Direction == "N") || (player_state.Y > me.Y && me.Direction == "S")) && (((player_state.X < me.X) && player_state.Direction == "E") || ((player_state.X > me.X) && player_state.Direction == "W") || ((player_state.Y < me.Y) && player_state.Direction == "S") || ((player_state.Y > me.Y) && player_state.Direction == "N") ) {
 				actionList = append(actionList, "T")
+				break
 			}
 			if (player_state.X < me.X || player_state.X > me.X) && (player_state.Direction == "E" || player_state.Direction == "W") {
 				if me.Direction == "E" || me.Direction == "W" {
@@ -64,6 +65,7 @@ func play(input ArenaUpdate) (response string) {
 				}else {
 					actionList = append(actionList, "F")
 				}
+				break
 			}else if (player_state.Y < me.Y || player_state.Y > me.Y) && (player_state.Direction == "N" || player_state.Direction == "S") {
 				if me.Direction == "N" || me.Direction == "S" {
 					commands := []string{"L", "R"}
@@ -73,15 +75,15 @@ func play(input ArenaUpdate) (response string) {
 				}else {
 					actionList = append(actionList, "F")
 				}
+				break
 			}
-			break
 		}
 	}
-	if len(actionList) == 0 {
-		commands := []string{"F", "R", "L", "T"}
-		rand := rand2.Intn(4)
-		actionList = append(actionList, commands[rand])
-	}
+	// if len(actionList) == 0 {
+	// 	commands := []string{"F", "R", "L", "T"}
+	// 	rand := rand2.Intn(4)
+	// 	actionList = append(actionList, commands[rand])
+	// }
 	action, actionList = actionList[0], actionList[1:]
 	return action
 }
